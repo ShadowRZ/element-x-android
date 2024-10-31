@@ -139,4 +139,11 @@ enum class FeatureFlags(
         },
         isFinished = false,
     ),
+    Knock(
+        key = "feature.knock",
+        title = "Ask to join",
+        description = "Allow creating rooms which users can request access to.",
+        defaultValue = { false },
+        isFinished = false,
+    ),
 }
