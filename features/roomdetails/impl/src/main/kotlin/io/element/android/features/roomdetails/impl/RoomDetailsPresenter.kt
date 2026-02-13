@@ -95,6 +95,7 @@ class RoomDetailsPresenter(
         val roomName by remember { derivedStateOf { roomInfo.name?.trim().orEmpty() } }
         val roomTopic by remember { derivedStateOf { roomInfo.topic } }
         val isFavorite by remember { derivedStateOf { roomInfo.isFavorite } }
+        val isLowPriority by remember { derivedStateOf { roomInfo.isLowPriority } }
         val joinRule by remember { derivedStateOf { roomInfo.joinRule } }
         val hasNewContent by remember {
             derivedStateOf {
@@ -166,6 +167,7 @@ class RoomDetailsPresenter(
                     }
                 }
                 is RoomDetailsEvent.SetFavorite -> scope.setFavorite(event.isFavorite)
+                is RoomDetailsEvent.SetLowPriority -> scope.setLowPriority(event.isLowPriority)
                 is RoomDetailsEvent.CopyToClipboard -> {
                     clipboardHelper.copyPlainText(event.text)
                     snackbarDispatcher.post(SnackbarMessage(CommonStrings.common_copied_to_clipboard))
@@ -201,6 +203,7 @@ class RoomDetailsPresenter(
             leaveRoomState = leaveRoomState,
             roomNotificationSettings = roomNotificationSettingsState.roomNotificationSettings(),
             isFavorite = isFavorite,
+            isLowPriority = isLowPriority,
             displayRolesAndPermissionsSettings = !isDm && permissions.canEditRolesAndPermissions,
             isPublic = joinRule == JoinRule.Public,
             heroes = roomInfo.heroes,
@@ -268,6 +271,10 @@ class RoomDetailsPresenter(
             .onSuccess {
                 analyticsService.captureInteraction(Interaction.Name.MobileRoomFavouriteToggle)
             }
+    }
+
+    private fun CoroutineScope.setLowPriority(isLowPriority: Boolean) = launch {
+        room.setIsLowPriority(isLowPriority)
     }
 
     private fun CoroutineScope.markAsRead() = launch {

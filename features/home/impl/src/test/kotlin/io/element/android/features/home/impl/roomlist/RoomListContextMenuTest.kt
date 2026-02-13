@@ -127,6 +127,24 @@ class RoomListContextMenuTest : RobolectricTest() {
         )
     }
 
+    @Test
+    fun `clicking on Low priority generates expected Event`() {
+        val eventsRecorder = EventsRecorder<RoomListEvent>()
+        val contextMenu = aContextMenuShown(isDm = false, isLowPriority = false)
+        val callback = EnsureNeverCalledWithParam<RoomId>()
+        rule.setRoomListContextMenu(
+            contextMenu = contextMenu,
+            eventSink = eventsRecorder,
+            onRoomSettingsClick = callback,
+        )
+        rule.clickOn(CommonStrings.common_low_priority)
+        eventsRecorder.assertList(
+            listOf(
+                RoomListEvent.SetRoomIsLowPriority(contextMenu.roomId, true),
+            )
+        )
+    }
+
     private fun AndroidComposeUiTest<ComponentActivity>.setRoomListContextMenu(
         contextMenu: RoomListState.ContextMenu.Shown,
         canReportRoom: Boolean = false,

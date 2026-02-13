@@ -69,6 +69,9 @@ fun RoomListContextMenu(
             onFavoriteChange = { isFavorite ->
                 eventSink(RoomListEvent.SetRoomIsFavorite(contextMenu.roomId, isFavorite))
             },
+            onLowPriorityChange = { isLowPriority ->
+                eventSink(RoomListEvent.SetRoomIsLowPriority(contextMenu.roomId, isLowPriority))
+            },
             onReportRoomClick = {
                 eventSink(RoomListEvent.HideContextMenu)
                 onReportRoomClick(contextMenu.roomId)
@@ -84,6 +87,7 @@ private fun RoomListModalBottomSheetContent(
     onRoomSettingsClick: () -> Unit,
     onLeaveRoomClick: () -> Unit,
     onFavoriteChange: (isFavorite: Boolean) -> Unit,
+    onLowPriorityChange: (isLowPriority: Boolean) -> Unit,
     onRoomMarkReadClick: () -> Unit,
     onRoomMarkUnreadClick: () -> Unit,
     onReportRoomClick: () -> Unit,
@@ -152,6 +156,26 @@ private fun RoomListModalBottomSheetContent(
             onClick = {
                 onFavoriteChange(!contextMenu.isFavorite)
             },
+        )
+        ListItem(
+            headlineContent = {
+                Text(
+                    text = stringResource(id = CommonStrings.common_low_priority),
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+            },
+            leadingContent = ListItemContent.Icon(
+                iconSource = IconSource.Vector(
+                    CompoundIcons.ArrowDown(),
+                )
+            ),
+            trailingContent = ListItemContent.Switch(
+                checked = contextMenu.isLowPriority,
+            ),
+            onClick = {
+                onLowPriorityChange(!contextMenu.isLowPriority)
+            },
+            style = ListItemStyle.Primary,
         )
         ListItem(
             headlineContent = {

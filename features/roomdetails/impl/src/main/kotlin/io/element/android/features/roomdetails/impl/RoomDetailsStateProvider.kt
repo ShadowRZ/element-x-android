@@ -60,6 +60,7 @@ open class RoomDetailsStateProvider : PreviewParameterProvider<RoomDetailsState>
             aSharedHistoryRoomDetailsState(roomHistoryVisibility = RoomHistoryVisibility.Joined),
             aSharedHistoryRoomDetailsState(roomHistoryVisibility = RoomHistoryVisibility.Shared),
             aSharedHistoryRoomDetailsState(roomHistoryVisibility = RoomHistoryVisibility.WorldReadable),
+            aRoomDetailsState(isLowPriority = true),
             // Add other state here
         )
 }
@@ -110,6 +111,7 @@ fun aRoomDetailsState(
     leaveRoomState: LeaveRoomState = aLeaveRoomState(),
     roomNotificationSettings: RoomNotificationSettings = aRoomNotificationSettings(),
     isFavorite: Boolean = false,
+    isLowPriority: Boolean = false,
     displayAdminSettings: Boolean = false,
     isPublic: Boolean = true,
     heroes: List<MatrixUser> = emptyList(),
@@ -141,6 +143,7 @@ fun aRoomDetailsState(
     leaveRoomState = leaveRoomState,
     roomNotificationSettings = roomNotificationSettings,
     isFavorite = isFavorite,
+    isLowPriority = isLowPriority,
     displayRolesAndPermissionsSettings = displayAdminSettings,
     isPublic = isPublic,
     heroes = heroes.toImmutableList(),
